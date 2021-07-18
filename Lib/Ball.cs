@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,13 +11,14 @@ namespace MonoPong
         private float _timer;
         private Vector2? _startPosition;
         private float? _startSpeed;
-        private bool _isPlaying;
+        public bool isPlaying;
         public Score score;
         public int SpeedIncrementSpan;
+        public GamingTimer gamingTimer;
 
         public Ball(Texture2D texture) : base(texture)
         {
-            this.SpeedIncrementSpan = 20;
+            this.SpeedIncrementSpan = 15;
             this.speed = 2f;
         }
 
@@ -43,8 +45,43 @@ namespace MonoPong
             this.position = (Vector2)_startPosition;
             this.speed = (float)_startSpeed;
             this._timer = 0;
-            this._isPlaying = false;
+            this.gamingTimer.timer = TimeSpan.Zero;
+            this.isPlaying = false;
         }
+
+        #region Colloision
+        protected bool IsCollectionLeft(PongSprite sprite)
+        {
+            return this.Rectangle.Right + this.velocity.X > sprite.Rectangle.Left &&
+            this.Rectangle.Left < sprite.Rectangle.Left &&
+            this.Rectangle.Bottom > sprite.Rectangle.Top &&
+            this.Rectangle.Top < sprite.Rectangle.Bottom;
+        }
+
+        protected bool IsCollectionRight(PongSprite sprite)
+        {
+            return this.Rectangle.Left + this.velocity.X < sprite.Rectangle.Right &&
+            this.Rectangle.Right > sprite.Rectangle.Right &&
+            this.Rectangle.Bottom > sprite.Rectangle.Top &&
+            this.Rectangle.Top < sprite.Rectangle.Bottom;
+        }
+
+        protected bool IsCollectionTop(PongSprite sprite)
+        {
+        return this.Rectangle.Bottom + this.velocity.Y > sprite.Rectangle.Top &&
+            this.Rectangle.Top < sprite.Rectangle.Top &&
+            this.Rectangle.Right > sprite.Rectangle.Left &&
+            this.Rectangle.Left < sprite.Rectangle.Right;
+        }
+
+        protected bool IsCollectionBottom(PongSprite sprite)
+        {
+        return this.Rectangle.Top + this.velocity.Y < sprite.Rectangle.Bottom &&
+            this.Rectangle.Bottom > sprite.Rectangle.Bottom &&
+            this.Rectangle.Right > sprite.Rectangle.Left &&
+            this.Rectangle.Left < sprite.Rectangle.Right;
+        }
+        #endregion
 
         public override void Update(GameTime gameTime, List<PongSprite> pongSprite)
         {
@@ -54,11 +91,13 @@ namespace MonoPong
                 this._startSpeed = this.speed;
                 this.Restart();
             }
-            if(Keyboard.GetState().IsKeyDown(Keys.Space))
-                this._isPlaying = true;
+            if(Keyboard.GetState().IsKeyDown(Keys.Space) && Pong.BattelComputer != null)
+                this.isPlaying = true;
             
-            if(!_isPlaying)
+            if(!isPlaying)
                 return;
+            
+            this.gamingTimer.timer += gameTime.ElapsedGameTime;
             
             this._timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if(this._timer > this.SpeedIncrementSpan)

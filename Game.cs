@@ -16,9 +16,12 @@ namespace MonoPong
         private int _backbufferWidth;
         private int _backbufferHeight;
         private Score _score;
-        private Timer _timer;
+        private GamingTimer _gamingTimer;
+        private Menu _menu;
         private List<PongSprite> _pongSprites;
         public static Random random;
+        public static bool? BattelComputer;
+        public static Ball ball;
 
         public Pong()
         {
@@ -52,33 +55,46 @@ namespace MonoPong
             var ballTexture = Content.Load<Texture2D>("Ball");
             var backGround = Content.Load<Texture2D>("Background");
             this._score = new Score(Content.Load<SpriteFont>("Font"));
-            this._timer = new Timer(Content.Load<SpriteFont>("TimerFont"));
+            this._gamingTimer = new GamingTimer(Content.Load<SpriteFont>("TimerFont"));
+            this._menu = new Menu(
+                Content.Load<SpriteFont>("MenuFont"),
+                new Input()
+                {
+                    Up = Keys.Up,
+                    Down = Keys.Down
+                });
+
+            var leftBat =  new Bat(batTexture)
+            {
+                position = new Vector2(20, (originalScreenSize.Y / 2) - (batTexture.Height / 2)),
+                input = new Input()
+                {
+                    Up = Keys.W,
+                    Down = Keys.S,
+                }
+            };
+            var rightBat  = new Bat(batTexture)
+            {
+                position = new Vector2(originalScreenSize.X - 20 - batTexture.Width, (originalScreenSize.Y / 2) - (batTexture.Height / 2)),
+                input = new Input()
+                {
+                    Up = Keys.Up,
+                    Down = Keys.Down,
+                }
+            };
+            ball = new Ball(ballTexture)
+            {
+                position = new Vector2((originalScreenSize.X / 2) - (ballTexture.Width / 2), (originalScreenSize.Y / 2) - (ballTexture.Height / 2)),
+                score = this._score,
+                gamingTimer = this._gamingTimer
+            };
+
             this._pongSprites = new List<PongSprite>()
             {
                 new PongSprite(backGround),
-                new Bat(batTexture)
-                {
-                    position = new Vector2(20, (originalScreenSize.Y / 2) - (batTexture.Height / 2)),
-                    input = new Input()
-                    {
-                        Up = Keys.W,
-                        Down = Keys.S,
-                    }
-                },
-                new Bat(batTexture)
-                {
-                    position = new Vector2(originalScreenSize.X - 20 - batTexture.Width, (originalScreenSize.Y / 2) - (batTexture.Height / 2)),
-                    input = new Input()
-                    {
-                        Up = Keys.Up,
-                        Down = Keys.Down,
-                    }
-                },
-                new Ball(ballTexture)
-                {
-                    position = new Vector2((originalScreenSize.X / 2) - (ballTexture.Width / 2), (originalScreenSize.Y / 2) - (ballTexture.Height / 2)),
-                    score = this._score,
-                }
+                leftBat,
+                rightBat,
+                ball
             };
             // TODO: use this.Content to load your game content here
         }
@@ -107,6 +123,7 @@ namespace MonoPong
             }
             foreach(var sprite in this._pongSprites)
                 sprite.Update(gameTime, this._pongSprites);
+            this._menu.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -117,7 +134,8 @@ namespace MonoPong
             foreach(var sprite in this._pongSprites)
                 sprite.Draw(this._spriteBatch);
             this._score.Draw(this._spriteBatch);
-            this._timer.Draw(this._spriteBatch);
+            this._gamingTimer.Draw(this._spriteBatch);
+            this._menu.Draw(this._spriteBatch);
             this._spriteBatch.End();
             base.Draw(gameTime);
         }
