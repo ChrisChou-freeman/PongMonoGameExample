@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -86,7 +87,8 @@ namespace MonoPong
             {
                 position = new Vector2((originalScreenSize.X / 2) - (ballTexture.Width / 2), (originalScreenSize.Y / 2) - (ballTexture.Height / 2)),
                 score = this._score,
-                gamingTimer = this._gamingTimer
+                gamingTimer = this._gamingTimer,
+                pongHitTableSound = Content.Load<SoundEffect>("Sounds/Pong")
             };
 
             this._pongSprites = new List<PongSprite>()

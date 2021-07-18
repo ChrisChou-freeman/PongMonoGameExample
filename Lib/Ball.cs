@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -15,6 +16,7 @@ namespace MonoPong
         public Score score;
         public int SpeedIncrementSpan;
         public GamingTimer gamingTimer;
+        public SoundEffect pongHitTableSound;
 
         public Ball(Texture2D texture) : base(texture)
         {
@@ -106,18 +108,36 @@ namespace MonoPong
                 this._timer = 0;
             }
 
+            var soundInstance = this.pongHitTableSound.CreateInstance();
+            soundInstance.Volume = 0.3f;
+
             foreach(var sprite in pongSprite)
             {
                 if(sprite == this)
                     continue;
                 if(this.velocity.X > 0 && this.IsCollectionLeft(sprite))
+                {
                     this.velocity.X = -this.velocity.X;
+                    soundInstance.Play();
+                }
                 if (this.velocity.X < 0 && this.IsCollectionRight(sprite))
+                {
                     this.velocity.X = -this.velocity.X;
+                    soundInstance.Play();
+                }
                 if (this.velocity.Y > 0 && this.IsCollectionTop(sprite))
+                {
                     this.velocity.Y = -this.velocity.Y;
+                    soundInstance.Play();
+                }
                 if (this.velocity.Y < 0 && this.IsCollectionBottom(sprite))
-                    this.velocity.Y = -this.velocity.Y;                
+                {
+                    this.velocity.Y = -this.velocity.Y;
+                    soundInstance.Play();
+                }
+                
+                // if(this.IsCollectionLeft(sprite) || this.IsCollectionRight(sprite) || this.IsCollectionTop(sprite) || this.IsCollectionBottom(sprite))
+                //     this.pongHitTableSound.Play();
             }
 
             
