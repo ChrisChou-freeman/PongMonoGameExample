@@ -2,14 +2,14 @@ Pone made by MonoGame full example
 
 imclude feature
 
-Play VS Play
-Play VS Computer
+Player VS Player
+Player VS Computer
 Collision
 Basic Sound Effects
-Simple menu
+Simple Menu
 
 
-"space" to select
+"Space" to select
 
 left control up="w"  down="s"
 rifht control up="Up" down="Down"

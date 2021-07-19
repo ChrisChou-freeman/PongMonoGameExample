@@ -51,10 +51,10 @@ namespace MonoPong
 
         protected override void LoadContent()
         {
-            this._spriteBatch = new SpriteBatch(GraphicsDevice);
             var batTexture = Content.Load<Texture2D>("Bat");
             var ballTexture = Content.Load<Texture2D>("Ball");
             var backGround = Content.Load<Texture2D>("Background");
+            this._spriteBatch = new SpriteBatch(GraphicsDevice);
             this._score = new Score(Content.Load<SpriteFont>("Font"));
             this._gamingTimer = new GamingTimer(Content.Load<SpriteFont>("TimerFont"));
             this._menu = new Menu(
