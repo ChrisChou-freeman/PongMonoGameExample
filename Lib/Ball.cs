@@ -117,29 +117,25 @@ namespace MonoPong
                     continue;
                 if(this.velocity.X > 0 && this.IsCollectionLeft(sprite))
                 {
-                    this.velocity.X = -this.velocity.X;
                     soundInstance.Play();
+                    this.velocity.X = -this.velocity.X;
                 }
                 if (this.velocity.X < 0 && this.IsCollectionRight(sprite))
                 {
-                    this.velocity.X = -this.velocity.X;
                     soundInstance.Play();
+                    this.velocity.X = -this.velocity.X;
                 }
                 if (this.velocity.Y > 0 && this.IsCollectionTop(sprite))
                 {
-                    this.velocity.Y = -this.velocity.Y;
                     soundInstance.Play();
+                    this.velocity.Y = -this.velocity.Y;
                 }
                 if (this.velocity.Y < 0 && this.IsCollectionBottom(sprite))
                 {
-                    this.velocity.Y = -this.velocity.Y;
                     soundInstance.Play();
+                    this.velocity.Y = -this.velocity.Y;
                 }
-                
-                // if(this.IsCollectionLeft(sprite) || this.IsCollectionRight(sprite) || this.IsCollectionTop(sprite) || this.IsCollectionBottom(sprite))
-                //     this.pongHitTableSound.Play();
             }
-
             
             if (this.position.Y <= 0 || this.position.Y + _texture.Height >= Pong.originalScreenSize.Y)
                 velocity.Y = -velocity.Y;

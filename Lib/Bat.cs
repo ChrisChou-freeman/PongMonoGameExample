@@ -63,7 +63,6 @@ namespace MonoPong
 
         public override void Update(GameTime gameTime, List<PongSprite> pongSprite)
         {
-            // Console.WriteLine(this.Rectangle.Bottom-this.Rectangle.Y);
             if (this.input == null)
                 throw new Exception("Please give a value to 'Input'");
             
