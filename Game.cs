@@ -19,6 +19,7 @@ namespace MonoPong
         private Score _score;
         private GamingTimer _gamingTimer;
         private Menu _menu;
+        private FrameCounter _frameCounter;
         private List<PongSprite> _pongSprites;
         public static Random random;
         public static bool? BattelComputer;
@@ -56,6 +57,7 @@ namespace MonoPong
             var backGround = Content.Load<Texture2D>("Background");
             this._spriteBatch = new SpriteBatch(GraphicsDevice);
             this._score = new Score(Content.Load<SpriteFont>("Font"));
+            this._frameCounter = new FrameCounter(Content.Load<SpriteFont>("TimerFont"));
             this._gamingTimer = new GamingTimer(Content.Load<SpriteFont>("TimerFont"));
             this._menu = new Menu(
                 Content.Load<SpriteFont>("MenuFont"),
@@ -126,6 +128,7 @@ namespace MonoPong
             foreach(var sprite in this._pongSprites)
                 sprite.Update(gameTime, this._pongSprites);
             this._menu.Update(gameTime);
+            this._frameCounter.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -138,6 +141,7 @@ namespace MonoPong
             this._score.Draw(this._spriteBatch);
             this._gamingTimer.Draw(this._spriteBatch);
             this._menu.Draw(this._spriteBatch);
+            this._frameCounter.Draw(this._spriteBatch);
             this._spriteBatch.End();
             base.Draw(gameTime);
         }
